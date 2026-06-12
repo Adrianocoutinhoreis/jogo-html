@@ -532,6 +532,9 @@ function verificarFimDeRodada() {
 }
 
 function mostrarTransicaoFase() {
+    const btnTut = document.getElementById('btn-tutorial-flutuante');
+    if (btnTut) btnTut.style.display = 'none';
+
     const screen = document.getElementById('level-screen');
     const title = screen.querySelector('h1');
     const sub = screen.querySelector('.subtitulo');
@@ -553,6 +556,9 @@ function mostrarTransicaoFase() {
 }
 
 function mostrarTransicaoLevel2() {
+    const btnTut = document.getElementById('btn-tutorial-flutuante');
+    if (btnTut) btnTut.style.display = 'none';
+
     const screen = document.getElementById('level-screen');
     const title = screen.querySelector('h1');
     const sub = screen.querySelector('.subtitulo');
@@ -572,6 +578,9 @@ function mostrarTransicaoLevel2() {
 }
 
 function prepararRodada() {
+    const btnTut = document.getElementById('btn-tutorial-flutuante');
+    if (btnTut) btnTut.style.display = 'flex';
+
     acertos = 0; vidas = 3;
     atualizarVidasUI();
     atualizarProgresso();
@@ -625,6 +634,9 @@ function calcularEstrelas() {
 }
 
 function gameOver(venceu, motivo = 'tempo') {
+    const btnTut = document.getElementById('btn-tutorial-flutuante');
+    if (btnTut) btnTut.style.display = 'none';
+
     document.getElementById('end-screen').classList.remove('hidden');
     const nome = document.getElementById('display-nome').textContent;
     document.getElementById('pontuacao-final').textContent = pontuacao;

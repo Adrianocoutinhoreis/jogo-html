@@ -14,6 +14,9 @@
 
 <body>
 
+    <!-- Botão de Tutorial Flutuante no Canto Superior -->
+    <button id="btn-tutorial-flutuante" class="btn-tutorial-open btn-tutorial-flutuante" onclick="iniciarTutorial()" title="Como Jogar">📖</button>
+
     <div id="game-container" class="container">
 
         <!-- ============================================================
@@ -29,7 +32,6 @@
                     <div class="controles-tutorial-wrapper" style="margin-bottom: 20px;">
                         <input type="text" id="nome-jogador" placeholder="Digite seu nome" autocomplete="off"
                             maxlength="15">
-                        <button class="btn-tutorial-open" onclick="iniciarTutorial()" title="Como Jogar">📖</button>
                     </div>
                     <button class="btn-primario" onclick="iniciarJogo()">🔑 JOGAR</button>
                 </div>
@@ -116,7 +118,6 @@
                 <div class="placar-lado">
                       <span id="timer" class="pontos-destaque">20s</span>
                 </div>
-                <button class="btn-tutorial-open" onclick="iniciarTutorial()" title="Ajuda">📖</button>
                 <span id="pontuacao" style="display: none;">0</span>
             </div>
         </header>

@@ -983,3 +983,175 @@ main {
         font-size: 0.75rem;
         padding: 3px 10px;
     }
+
+/* Botão Flutuante em Destaque */
+.btn-tutorial-flutuante {
+    position: fixed !important;
+    top: 15px !important;
+    right: 15px !important;
+    z-index: 105 !important;
+    background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+    border: 2px solid #FFF !important;
+    font-size: 1.6rem !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 0 4px 10px rgba(0,0,0,0.2) !important;
+    animation: pulseGlowBtn 2s infinite ease-in-out !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-tutorial-flutuante:hover {
+    transform: scale(1.1) rotate(5deg) !important;
+    background: linear-gradient(135deg, #FFF, #FFD700) !important;
+}
+
+@keyframes pulseGlowBtn {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 0 4px 10px rgba(0,0,0,0.2);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 6px 15px rgba(0,0,0,0.3);
+    }
+}
+
+/* Modo Mobile 320px - Altera a ordem do cronômetro e aproxima os espaçamentos */
+@media (max-width: 320px) {
+    .placar-header {
+        display: grid !important;
+        grid-template-areas: 
+            "timer timer"
+            "player vidas" !important;
+        grid-template-columns: 1fr auto !important;
+        gap: 5px !important;
+        padding: 8px 12px !important;
+        justify-content: stretch !important;
+        align-items: center !important;
+    }
+    
+    .placar-header .status-grupo {
+        display: contents !important;
+    }
+    
+    /* Timer container - centered at the top */
+    .placar-header .status-grupo:last-of-type > .placar-lado {
+        grid-area: timer !important;
+        justify-self: center !important;
+        margin-bottom: 2px !important;
+    }
+    
+    /* Player name container - left */
+    .placar-header .status-grupo:first-of-type > .placar-lado:first-of-type {
+        grid-area: player !important;
+        justify-self: start !important;
+        font-size: 0.9rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    /* Vidas/Hearts container - right */
+    .placar-header .vidas-display {
+        grid-area: vidas !important;
+        justify-self: end !important;
+        margin: 0 !important;
+        padding: 3px 6px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .placar-header .nivel-badge {
+        display: none !important;
+    }
+
+    /* Redução de espaçamentos no corpo do jogo */
+    main {
+        padding: 8px !important;
+        gap: 8px !important;
+    }
+
+    #wooden-board {
+        padding: 8px !important;
+        gap: 8px !important;
+    }
+
+    #key-tray {
+        padding: 8px !important;
+        gap: 8px !important;
+        min-height: 70px !important;
+    }
+    
+    .container {
+        height: auto !important;
+        min-height: 480px !important;
+    }
+
+    /* Ajuste para centralizar e ajustar o tamanho das telas/cartões overlays */
+    .overlay {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 10px !important;
+        width: 100% !important;
+        height: 100% !important;
+        left: 0 !important;
+        top: 0 !important;
+        box-sizing: border-box !important;
+        overflow-y: auto !important;
+    }
+
+    .overlay.hidden {
+        display: none !important;
+    }
+
+    .cartao-overlay {
+        padding: 12px !important;
+        width: 95% !important;
+        max-width: 280px !important;
+        margin: auto !important;
+        box-sizing: border-box !important;
+    }
+
+    #icone-final {
+        font-size: 2.2rem !important;
+        margin-bottom: 5px !important;
+    }
+
+    .stats-grid {
+        gap: 6px !important;
+        margin: 8px 0 !important;
+    }
+
+    .stat-item {
+        padding: 5px !important;
+    }
+
+    .stat-valor {
+        font-size: 1rem !important;
+    }
+
+    .stat-label {
+        font-size: 0.65rem !important;
+    }
+
+    .estrelas-resultado {
+        margin: 5px 0 !important;
+        gap: 4px !important;
+    }
+
+    .estrela {
+        font-size: 1.6rem !important;
+    }
+
+    #titulo-final {
+        font-size: 1.2rem !important;
+    }
+
+    .subtitulo {
+        font-size: 0.85rem !important;
+        margin-bottom: 8px !important;
+    }
+}

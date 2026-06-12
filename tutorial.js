@@ -53,6 +53,9 @@ function iniciarTutorial() {
     tutorialAtivo = true;
     passoAtual = 0;
 
+    const btnTut = document.getElementById('btn-tutorial-flutuante');
+    if (btnTut) btnTut.style.display = 'none';
+
     // Verificar se foi aberto a partir da tela inicial
     const startScreen = document.getElementById('start-screen');
     if (startScreen && !startScreen.classList.contains('hidden')) {
@@ -266,6 +269,8 @@ function encerrarTutorial() {
     } else {
         // Retomar cronômetro do jogo
         retomarCronometroJogo();
+        const btnTut = document.getElementById('btn-tutorial-flutuante');
+        if (btnTut) btnTut.style.display = 'flex';
     }
 }
 
