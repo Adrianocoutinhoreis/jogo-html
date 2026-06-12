@@ -1,0 +1,234 @@
+/* ==========================================================================
+   TUTORIAL CSS - Chave Mágica
+   Estilos premium para o tutorial interativo
+   ========================================================================== */
+
+/* Máscara de fundo do tutorial */
+.tutorial-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: rgba(10, 10, 25, 0.2); /* Fundo sutil pois a caixa de destaque fará o escurecimento pesado */
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.tutorial-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+}
+
+/* Caixa de destaque dinâmica */
+#tutorial-highlight-box {
+    position: absolute;
+    z-index: 10000;
+    pointer-events: none;
+    box-shadow: 0 0 0 9999px rgba(10, 10, 25, 0.75);
+    border: 3px solid #FFD700;
+    border-radius: var(--radius-md, 15px);
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    box-sizing: border-box;
+}
+
+#tutorial-highlight-box::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border: 2px dashed rgba(255, 215, 0, 0.5);
+    border-radius: calc(var(--radius-md, 15px) + 5px);
+    animation: tutorialGlow 2s infinite linear;
+}
+
+@keyframes tutorialGlow {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.02);
+        opacity: 0.4;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+}
+
+/* Balão do Tutorial (Tooltip Card) */
+.tutorial-tooltip {
+    position: absolute;
+    z-index: 10005;
+    width: 320px;
+    max-width: calc(100% - 30px);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-family: var(--font-main, inherit);
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(15px) scale(0.95);
+    box-sizing: border-box;
+}
+
+.tutorial-tooltip.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+/* Título e Conteúdo */
+.tutorial-tooltip h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--wood-color, #4A2311);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tutorial-tooltip p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #2C3E50;
+    font-weight: 500;
+}
+
+/* Rodapé do tooltip e progresso */
+.tutorial-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    gap: 10px;
+}
+
+.tutorial-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.tutorial-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.tutorial-dot.active {
+    background: var(--text-main, #4974c5);
+    transform: scale(1.25);
+    box-shadow: 0 0 5px rgba(73, 116, 197, 0.5);
+}
+
+/* Botões do Tutorial */
+.tutorial-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-tutorial {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-main, inherit);
+    transition: all 0.2s ease;
+}
+
+.btn-tutorial-sec {
+    background: #E8ECEF;
+    color: #495057;
+}
+
+.btn-tutorial-sec:hover {
+    background: #DEE2E6;
+}
+
+.btn-tutorial-prim {
+    background: linear-gradient(135deg, var(--text-main, #4974c5), #34495E);
+    color: white;
+    box-shadow: 0 3px 6px rgba(73, 116, 197, 0.2);
+}
+
+.btn-tutorial-prim:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(73, 116, 197, 0.3);
+}
+
+/* Botão de abrir tutorial na UI principal */
+.btn-tutorial-open {
+    position: relative;
+    background: #65321a;
+    border: 2px solid rgba(0, 0, 0, 0.08);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-tutorial-open:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    background: #F8F9FA;
+}
+
+.btn-tutorial-open:active {
+    transform: scale(0.95);
+}
+
+/* Posicionamento do botão na Tela Inicial */
+.controles-tutorial-wrapper {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.controles-tutorial-wrapper input {
+    margin-bottom: 0 !important;
+    flex-grow: 1;
+}
+
+.controles-tutorial-wrapper .btn-tutorial-open {
+    width: 54px;
+    height: 54px;
+    font-size: 1.8rem;
+    box-shadow: 0 8px 0 rgba(0,0,0,0.06);
+    border: 2px solid rgba(0,0,0,0.08);
+}
+.controles-tutorial-wrapper .btn-tutorial-open:hover {
+    transform: scale(1.05);
+}
+.controles-tutorial-wrapper .btn-tutorial-open:active {
+    transform: translateY(8px);
+    box-shadow: 0 0 0 transparent;
+}

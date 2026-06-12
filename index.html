@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chave Mágica - Numerandus</title>
+    <meta name="description"
+        content="Chave Mágica: Jogo educativo de arrastar e soltar para crianças. Encontre a chave correta para cada fechadura!">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="TUTORIAL/tutorial.css">
+</head>
+
+<body>
+
+    <div id="game-container" class="container">
+
+        <!-- ============================================================
+             TELA INICIAL
+             ============================================================ -->
+        <div id="start-screen" class="overlay">
+            <div class="cartao-overlay">
+                <div class="logo-jogo flutuar">
+                    🔑 Chave Mágica
+                </div>
+                <p class="subtitulo">Arraste as chaves coloridas e encontre o molde correto para cada uma!</p>
+                <div class="controles">
+                    <div class="controles-tutorial-wrapper" style="margin-bottom: 20px;">
+                        <input type="text" id="nome-jogador" placeholder="Digite seu nome" autocomplete="off"
+                            maxlength="15">
+                        <button class="btn-tutorial-open" onclick="iniciarTutorial()" title="Como Jogar">📖</button>
+                    </div>
+                    <button class="btn-primario" onclick="iniciarJogo()">🔑 JOGAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             TELA TRANSIÇÃO NÍVEL 1 → 2
+             ============================================================ -->
+        <div id="level-screen" class="overlay hidden">
+            <div class="cartao-overlay">
+                <div class="flutuar" style="font-size: 4rem; margin-bottom: 10px;">🔓</div>
+                <h1 style="color: var(--success-color); margin-bottom: 10px; font-size: 1.8rem;">Nível 1 Concluído!</h1>
+                <p class="subtitulo">Muito bem! Agora prepare-se para o desafio dos <strong>Cadeados Coloridos</strong>.
+                    Encontre a chave que abre cada cadeado!</p>
+                <button class="btn-primario btn-nivel2" onclick="iniciarNivel2()">🔐 IR PARA O NÍVEL 2</button>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             TELA FINAL (Vitória / Derrota)
+             ============================================================ -->
+        <div id="end-screen" class="overlay hidden">
+            <div class="cartao-overlay">
+                <div id="icone-final" class="flutuar" style="font-size: 4rem; margin-bottom: 10px;">🏆</div>
+                <h1 id="titulo-final" style="color: var(--text-main); margin-bottom: 5px; font-size: 1.6rem;">
+                    Parabéns, <span id="nome-vencedor"></span>!
+                </h1>
+                <p id="subtitulo-final" class="subtitulo" style="margin-bottom: 15px;">
+                    Conseguiu abrir todas as fechaduras e cadeados mágicos!
+                </p>
+
+                <!-- Estrelas de avaliação -->
+                <div id="estrelas-container" class="estrelas-resultado">
+                    <span class="estrela">⭐</span>
+                    <span class="estrela">⭐</span>
+                    <span class="estrela">⭐</span>
+                </div>
+
+                <!-- Estatísticas -->
+                <div id="stats-container" class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-valor" id="stat-acertos">0/8</div>
+                        <div class="stat-label">Acertos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-valor" id="stat-erros">0</div>
+                        <div class="stat-label">Erros</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-valor" id="stat-tempo">0s</div>
+                        <div class="stat-label">Tempo</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-valor" id="stat-nivel">Nível 1</div>
+                        <div class="stat-label">Alcançado</div>
+                    </div>
+                </div>
+
+                <p style="font-size: 1.5rem; font-weight: 700; color: var(--wood-color); margin: 15px 0;">
+                    Pontuação: <span id="pontuacao-final">0</span>
+                </p>
+                <button class="btn-primario" onclick="reiniciarJogo()">🔄 JOGAR NOVAMENTE</button>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             ÁREA DO JOGO
+             ============================================================ -->
+        <header class="placar-header">
+            <div class="status-grupo">
+                <div class="placar-lado">
+                    👤 <span id="display-nome">Jogador</span>
+                </div>
+                <div class="placar-lado vidas-display" id="vidas-container">
+                    <span class="coracao" id="vida-1">❤️</span>
+                    <span class="coracao" id="vida-2">❤️</span>
+                    <span class="coracao" id="vida-3">❤️</span>
+                </div>
+                <span class="nivel-badge" id="nivel-indicador"></span>
+            </div>
+            <div id="status"></div>
+            <div class="status-grupo">
+                <div class="placar-lado">
+                      <span id="timer" class="pontos-destaque">20s</span>
+                </div>
+                <button class="btn-tutorial-open" onclick="iniciarTutorial()" title="Ajuda">📖</button>
+                <span id="pontuacao" style="display: none;">0</span>
+            </div>
+        </header>
+
+        <!-- Barra de progresso -->
+        <div class="progresso-container">
+            <div class="progresso-barra" id="progresso-barra"></div>
+        </div>
+
+        <main id="main-area">
+            <div id="wooden-board">
+                <!-- Fechaduras / Cadeados serão gerados pelo JS -->
+            </div>
+            <div id="key-tray">
+                <!-- Chaves coloridas serão geradas pelo JS -->
+            </div>
+        </main>
+    </div>
+
+    <script src="TUTORIAL/tutorial.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

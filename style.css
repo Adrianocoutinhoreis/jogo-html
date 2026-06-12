@@ -1,0 +1,985 @@
+/* ==========================================================================
+   CHAVE MÁGICA - Jogo Educativo Numerandus
+   Estilos principais (DESIGN.md compliant)
+   ========================================================================== */
+
+/* ==========================================================================
+   1. VARIÁVEIS DE DESIGN E CORES (Baseado no DESIGN.md)
+   ========================================================================== */
+:root {
+    --bg-primary: #F0F8FF;
+    --bg-card: #FFFFFF;
+    --text-main: #4974c5;
+    --text-muted: #2C3E50;
+    --wood-color: #4A2311;
+    --wood-dark: #695d35;
+    --wood-light: #7a3e21;
+
+    --key-red: #FF4B4B;
+    --key-blue: #4B96FF;
+    --key-green: #32CD32;
+    --key-yellow: #FFD700;
+    --key-purple: #9370DB;
+    --key-orange: #FFA500;
+    --key-pink: #FF69B4;
+    --key-cyan: #00CED1;
+
+    --success-color: #2ECC71;
+    --error-color: #E74C3C;
+
+    --radius-xl: 40px;
+    --radius-lg: 20px;
+    --radius-md: 15px;
+    --radius-sm: 10px;
+    --font-main: 'Fredoka', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ==========================================================================
+   2. RESET E FONTES
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: #1a1a2e;
+    background-image: url('../BG/BG.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    overflow: hidden;
+    touch-action: none;
+}
+
+/* ==========================================================================
+   3. LAYOUT E ESTRUTURA (DESIGN.md: Container 950px, 660px, border-radius 40px)
+   ========================================================================== */
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 950px;
+    height: clamp(500px, 95dvh, 660px);
+    background: rgba(200, 226, 250, 0.87);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1.5px solid rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+}
+
+/* ==========================================================================
+   4. CABEÇALHO (DESIGN.md: .placar-header)
+   ========================================================================== */
+.placar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: var(--bg-card);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    z-index: 10;
+}
+
+.placar-lado {
+    font-weight: 700;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pontos-destaque {
+    background: linear-gradient(135deg, var(--wood-light), var(--wood-color));
+    color: white;
+    padding: 5px 15px;
+    border-radius: var(--radius-lg);
+    font-weight: 800;
+    transition: all 0.3s ease;
+    min-width: 50px;
+    text-align: center;
+}
+
+.timer-critico {
+    animation: timerPulsar 0.8s infinite alternate ease-in-out;
+    background: linear-gradient(135deg, var(--error-color), #c0392b) !important;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.6);
+}
+
+/* Vidas e Grupos do Header */
+.status-grupo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.vidas-display {
+    display: flex;
+    gap: 5px;
+    font-size: 1.3rem;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 5px 12px;
+    border-radius: var(--radius-lg);
+}
+
+.coracao {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block;
+}
+
+.coracao.perdido {
+    filter: grayscale(1) opacity(0.4);
+    transform: scale(0.7);
+}
+
+@keyframes vidaPerdidaAnim {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.4) rotate(-15deg);
+    }
+}
+
+.coracao.animar-perda {
+    animation: vidaPerdidaAnim 0.4s ease;
+}
+
+#status {
+    display: none;
+}
+
+/* Indicador de Nível */
+/*.nivel-badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}*/
+
+/* ==========================================================================
+   5. ÁREA PRINCIPAL DO JOGO
+   ========================================================================== */
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+    position: relative;
+}
+
+/* Tabuleiro Nível 1 (Madeira) */
+#wooden-board {
+    flex: 1;
+    background: var(--wood-color);
+    border-radius: var(--radius-lg);
+    border: 8px solid var(--wood-dark);
+    box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.5), 0 10px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 0, 0, 0.05) 10px, rgba(0, 0, 0, 0.05) 20px);
+    transition: background 0.5s, border-color 0.5s;
+}
+
+/* Tabuleiro Nível 2 (Painel Metálico) */
+#wooden-board.nivel-2-board {
+    background: linear-gradient(160deg, #4A6572, #344955);
+    border-color: #34495E;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 0, 0, 0.1) 10px, rgba(0, 0, 0, 0.1) 20px);
+    box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.6), 0 10px 15px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Bandeja de Chaves */
+#key-tray {
+    height: 160px;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 20;
+}
+
+/* ==========================================================================
+   6. ELEMENTOS DO JOGO - FECHADURAS E CHAVES
+   ========================================================================== */
+
+/* Molde Clássico Nível 1 */
+.fechadura {
+    width: 140px;
+    height: 60px;
+    background: var(--wood-dark);
+    border-radius: var(--radius-sm);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.8);
+    transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+/* Molde Cadeado Nível 2 */
+.fechadura-cadeado {
+    width: 120px;
+    height: 120px;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* Feedbacks visuais de arrasto */
+.fechadura.highlight {
+    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.6), inset 0 5px 10px rgba(0, 0, 0, 0.8);
+    transform: scale(1.05);
+    border: 2.5px solid white;
+}
+
+.fechadura.drag-over {
+    box-shadow: 0 0 20px 8px #FFD700, inset 0 5px 10px rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+    border: 3px solid #FFD700;
+}
+
+.fechadura-cadeado.highlight {
+    box-shadow: none !important;
+    border: none !important;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+}
+
+.fechadura-cadeado.drag-over {
+    box-shadow: none !important;
+    border: none !important;
+    filter: drop-shadow(0 0 15px #FFD700);
+}
+
+/* Animações de sucesso */
+.fechadura.animar-sucesso {
+    animation: brilhoEncaixe 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10;
+}
+
+.fechadura-cadeado.animar-sucesso {
+    animation: brilhoEncaixeCadeado 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Slots e containers de chaves */
+.chave-slot {
+    width: 140px;
+    height: 60px;
+    position: relative;
+}
+
+.chave-container {
+    width: 140px;
+    height: 60px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: grab;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+    z-index: 5;
+    touch-action: none;
+}
+
+.chave-container:active {
+    cursor: grabbing;
+}
+
+.chave-container:hover:not(.dragging) {
+    transform: scale(1.1) translateY(-5px);
+}
+
+.chave-container.dragging {
+    cursor: grabbing;
+    z-index: 9999 !important;
+    filter: drop-shadow(0 20px 20px rgba(0, 0, 0, 0.5));
+    transition: filter 0.15s ease-out !important;
+}
+
+.chave-container.returning {
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), filter 0.35s ease !important;
+}
+
+/* Chave encaixada na fechadura */
+.chave-encaixada {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
+    pointer-events: none;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+    animation: afundarChave 0.4s ease-out forwards;
+}
+
+.svg-chave,
+.svg-cadeado {
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   7. OVERLAYS E TELAS (DESIGN.md)
+   ========================================================================== */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(240, 248, 255, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    border-radius: var(--radius-xl);
+    text-align: center;
+    padding: 20px;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+.cartao-overlay {
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    max-width: 90%;
+    width: 420px;
+    animation: cairDoAlto 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.logo-jogo {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 800;
+    color: var(--wood-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.logo-jogo svg {
+    width: 50px;
+    height: 50px;
+}
+
+.subtitulo {
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+.controles input {
+    width: 100%;
+    padding: 15px;
+    font-family: var(--font-main);
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    color: var(--text-main);
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background: #f8f9fa;
+}
+
+.controles input:focus {
+    border-color: var(--wood-light);
+    box-shadow: 0 0 0 4px rgba(122, 62, 33, 0.15);
+}
+
+.btn-primario {
+    background: linear-gradient(135deg, var(--success-color), #27ae60);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-family: var(--font-main);
+    font-size: 1.3rem;
+    font-weight: 800;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 8px 0 #1e8449;
+    letter-spacing: 1px;
+}
+
+.btn-primario:hover {
+    transform: translateY(2px);
+    box-shadow: 0 6px 0 #1e8449;
+    filter: brightness(1.1);
+}
+
+.btn-primario:active {
+    transform: translateY(8px);
+    box-shadow: 0 0 0 #1e8449;
+}
+
+/* Botão secundário (nível 2) */
+.btn-nivel2 {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 8px 0 #4a3578;
+}
+
+.btn-nivel2:hover {
+    box-shadow: 0 6px 0 #4a3578;
+}
+
+.btn-nivel2:active {
+    box-shadow: 0 0 0 #4a3578;
+}
+
+/* ==========================================================================
+   8. FEEDBACK PROFISSIONAL - TOAST NOTIFICATIONS
+   ========================================================================== */
+.feedback-toast {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 200;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: toastPop 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.feedback-toast .feedback-icon {
+    font-size: 3.5rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.feedback-toast .feedback-text {
+    font-family: var(--font-main);
+    font-weight: 800;
+    font-size: 1.4rem;
+    padding: 8px 24px;
+    border-radius: 30px;
+    color: white;
+    white-space: nowrap;
+}
+
+.feedback-toast.sucesso .feedback-text {
+    background: linear-gradient(135deg, var(--success-color), #27ae60);
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.5);
+}
+
+.feedback-toast.erro .feedback-text {
+    background: linear-gradient(135deg, var(--error-color), #c0392b);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.5);
+}
+
+/* Barra de progresso do nível */
+.progresso-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 20px;
+}
+
+.progresso-barra {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success-color), #27ae60);
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+    width: 0%;
+}
+
+/* Estrelas de resultado */
+.estrelas-resultado {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    justify-content: center;
+}
+
+.estrela {
+    font-size: 2.5rem;
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.estrela.ativa {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+    animation: estrelaBrilhar 2s infinite ease-in-out;
+}
+
+.estrela.vazia {
+    opacity: 0.3;
+    transform: scale(0.8) rotate(0);
+    filter: grayscale(1);
+}
+
+/* Estatísticas finais */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.stat-item {
+    background: rgba(0, 0, 0, 0.03);
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+}
+
+.stat-valor {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--wood-color);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* ==========================================================================
+   9. ANIMAÇÕES (DESIGN.md)
+   ========================================================================== */
+@keyframes cairDoAlto {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes shakeInput {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(-10px);
+    }
+
+    40%,
+    80% {
+        transform: translateX(10px);
+    }
+}
+
+.shake {
+    animation: shakeInput 0.4s ease-in-out;
+    background-color: var(--error-color) !important;
+}
+
+@keyframes trofeuFlutuar {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.flutuar {
+    animation: trofeuFlutuar 3s infinite ease-in-out;
+}
+
+@keyframes brilhoEncaixe {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.8), inset 0 5px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    50% {
+        transform: scale(1.15);
+        box-shadow: 0 0 30px 15px rgba(46, 204, 113, 0), inset 0 5px 10px rgba(0, 0, 0, 0.8);
+        border-color: var(--success-color);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.8);
+    }
+}
+
+@keyframes brilhoEncaixeCadeado {
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 rgba(46, 204, 113, 0.8));
+    }
+
+    50% {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 20px rgba(46, 204, 113, 1));
+    }
+
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+    }
+}
+
+@keyframes afundarChave {
+    0% {
+        transform: translate(-50%, -50%) scale(1.1);
+        filter: brightness(1.2);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        filter: brightness(1) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+    }
+}
+
+@keyframes timerPulsar {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.15);
+    }
+}
+
+@keyframes inserirEGirarChave {
+    0% {
+        transform: translate(80px, 90px) scale(0.66) rotate(0deg);
+        opacity: 0;
+    }
+    30% {
+        transform: translate(33px, 90px) scale(0.66) rotate(0deg);
+        opacity: 1;
+    }
+    65% {
+        transform: translate(33px, 90px) scale(0.66) rotate(-90deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(33px, 90px) scale(0.66) rotate(-90deg);
+        opacity: 1;
+    }
+}
+
+.chave-girar {
+    animation: inserirEGirarChave 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    transform-origin: 24px 27px;
+}
+
+@keyframes alcaCadeadoAbrindo {
+    0%, 65% {
+        transform: translateY(0) rotate(0deg);
+    }
+    85%, 100% {
+        transform: translateY(-16px) rotate(-20deg);
+    }
+}
+
+.alca-anim {
+    animation: alcaCadeadoAbrindo 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    transform-origin: 42px 60px;
+}
+
+.alca-aberta-final {
+    transform: translateY(-16px) rotate(-20deg);
+    transform-origin: 42px 60px;
+}
+
+.chave-aberta-final {
+    transform-origin: 24px 27px;
+    transform: translate(33px, 90px) scale(0.66) rotate(-90deg) !important;
+}
+
+@keyframes checkmarkPop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.svg-cadeado.opened circle {
+    animation: checkmarkPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    transform-origin: 135px 138px;
+}
+
+.svg-cadeado.opened polyline {
+    animation: checkmarkPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.15s both;
+    transform-origin: 135px 138px;
+}
+
+@keyframes toastPop {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+
+    20% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+    }
+
+    40% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    80% {
+        transform: translate(-50%, -60%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -80%) scale(0.8);
+        opacity: 0;
+    }
+}
+
+@keyframes estrelaBrilhar {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.9));
+    }
+}
+
+@keyframes explosaoParticula {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.5);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(calc(-50% + var(--tx) * 1.5), calc(-50% + var(--ty) * 1.5)) scale(0);
+        opacity: 0;
+    }
+}
+
+.particula.explosao {
+    position: absolute;
+    pointer-events: none;
+    animation: explosaoParticula 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    font-size: 2rem;
+    z-index: 105;
+}
+
+@keyframes confettiCair {
+    0% {
+        transform: translateY(-10px) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(400px) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 150;
+    animation: confettiCair var(--duration) ease-in forwards;
+    animation-delay: var(--delay);
+    opacity: 0;
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(46, 204, 113, 0.6);
+    }
+}
+
+/* ==========================================================================
+   10. RESPONSIVIDADE (DESIGN.md)
+   ========================================================================== */
+@media (max-width: 600px) {
+    .placar-header {
+        padding: 10px 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .status-grupo {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    #status {
+        order: 3;
+        width: 100%;
+        margin-top: 5px;
+        font-size: 1.1rem;
+    }
+
+    .placar-lado {
+        font-size: 1rem;
+    }
+
+    .vidas-display {
+        font-size: 1rem;
+        padding: 3px 8px;
+    }
+
+    .fechadura,
+    .chave-container,
+    .chave-slot {
+        width: 100px;
+        height: 45px;
+    }
+
+    .fechadura-cadeado {
+        width: 90px !important;
+        height: 90px !important;
+    }
+
+    #wooden-board {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    #key-tray {
+        height: auto;
+        min-height: 110px;
+        padding: 10px;
+        gap: 10px;
+    }
+}
+
+/* Telas super pequenas (ex: Mobile S - ~300px) */
+@media (max-width: 340px) {
+    .fechadura,
+    .chave-container,
+    .chave-slot {
+        width: 80px;
+        height: 36px;
+    }
+
+    .fechadura-cadeado {
+        width: 70px !important;
+        height: 70px !important;
+    }
+
+    #wooden-board {
+        padding: 6px;
+        gap: 6px;
+    }
+
+    #key-tray {
+        min-height: 90px;
+        padding: 6px;
+        gap: 6px;
+    }
+    
+    .container {
+        border-radius: var(--radius-lg);
+    }
+
+    .status-grupo:last-of-type {
+        justify-content: center;
+        gap: 15px;
+    }
+}
+
+    .cartao-overlay {
+        padding: 25px;
+    }
+
+    .logo-jogo {
+        font-size: 1.6rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .nivel-badge {
+        font-size: 0.75rem;
+        padding: 3px 10px;
+    }
